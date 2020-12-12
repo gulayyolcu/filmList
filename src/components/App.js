@@ -1,6 +1,6 @@
 import React from 'react';
 import MovieList from './MovieList';
-/* import SearchBar from './SearchBar'; */
+import SearchBar from './SearchBar';
 
 class App extends React.Component{
     state={
@@ -63,20 +63,29 @@ class App extends React.Component{
 
     }
 
-    searchMovie=()=>{
-
+    searchMovie=(event)=>{
+      this.setState({
+        searchQuery:event.target.value
+      })
     }
 
     //CLASS BASED COMPONENT OLDUĞU İÇİN THİS KULLANIYORUZ
     render(){
+
+        let filteredMovies=this.state.movies.filter(
+            (movie)=>{
+                return movie.name.toLowerCase().indexOf(this.state.searchQuery.toLowerCase())!==-1
+            }
+        )
+
         return(
             <div className="container mt-4">
                 <div className="row mt-4">
                     <div className="col-lg-12 mt-4">
-                     {/*  <SearchBar searchMovieProp={this.searchMovie}/> */}
+                      <SearchBar searchMovieProp={this.searchMovie}/>
                     </div>
                 </div>
-                <MovieList movies={this.state.movies} deleteMovieProp={this.deleteMovie}/>
+                <MovieList movies={filteredMovies} deleteMovieProp={this.deleteMovie}/>
             </div>
         )
         
